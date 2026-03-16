@@ -4,10 +4,8 @@ from typing import Annotated, Sequence, TypedDict
 
 import dotenv
 from langchain_community.tools import DuckDuckGoSearchRun
-from langchain_core.language_models.llms import LLM
-from langchain_core.messages import BaseMessage, HumanMessage
-from langchain_core.vectorstores.base import VectorStore
-from langchain_huggingface import HuggingFaceEndpoint
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import END, StateGraph
 
 from db.document import get_vectorstore
@@ -17,12 +15,10 @@ HF_API_KEY = os.getenv("HF_API_KEY")
 if not HF_API_KEY:
     raise ValueError("Hugging face key is not set")
 
-llm = HuggingFaceEndpoint(
-    repo_id="microsoft/Phi-3-mini-128k-instruct",
-    huggingfacehub_api_token=HF_API_KEY,
-    task="text-generation",
-    max_new_tokens=512,
+chat_model = ChatGoogleGenerativeAI(
+    model="gemini-2.5-flash",
 )
+
 
 
 class AgentState(TypedDict):
@@ -33,9 +29,7 @@ class AgentState(TypedDict):
 def retrieve_node(state: AgentState):
     vectorstore = get_vectorstore()
     last_message = state["messages"][-1]
-    query = (
-        last_message.content if hasattr(last_message, "content") else str(last_message)
-    )
+    query = last_message.content if hasattr(last_message, 'content') else str(last_message)
     docs = vectorstore.similarity_search(query, k=2)
     return {"context": "\n".join([d.page_content for d in docs])}
 
@@ -50,12 +44,12 @@ def web_search_node(state: AgentState):
 
 def generate_node(state: AgentState):
     last_message = state["messages"][-1]
-    query = (
-        last_message.content if hasattr(last_message, "content") else str(last_message)
-    )
+    query = last_message.content if hasattr(last_message, 'content') else str(last_message)
+
     prompt = f"Context: {state['context']}\n\nQuestion: {query}"
-    response = llm.invoke(prompt)
-    return {"messages": [HumanMessage(content=response)]}
+    response = chat_model.invoke([HumanMessage(content=prompt)])
+
+    return {"messages": [response]}
 
 
 workflow = StateGraph(AgentState)

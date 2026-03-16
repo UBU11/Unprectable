@@ -25,15 +25,14 @@ if prompt := st.chat_input("Ask me anything..."):
     st.session_state.chat_history.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
-    
+
     with st.spinner("Thinking..."):
-        inputs = {"messages:" [HumanMessage(content=prompt)]}
+        inputs = {"messages": [HumanMessage(content=prompt)]}
         config = {"configurable": {"thread_id": "1"}}
         result = rag_app.invoke(inputs, config)
-        
+
         answer = result["messages"][-1].content
-        
+
     with st.chat_message("assistant"):
             st.markdown(answer)
     st.session_state.chat_history.append({"role": "assistant", "content": answer})
-        
