@@ -1,21 +1,19 @@
-from langgraph.graph import END, StateGraph
 from supermemory import Supermemory
+import os
+import dotenv
+dotenv.load_dotenv()
 
-memory = Supermemory()
+client = Supermemory(api_key=os.getenv("SUPERMEMORY_API_KEY"))
 
+try:
 
-def retrieve_context(state):
-    result = memory.profile(
-        container_tag=state["user_id"],
-        q=state["query"],
+    client.add(
+    content="User prefers frictionless books that are easy to read and understand.",
+    container_tag="user-123"
     )
-    state["context"] = result
-    return state
-
-
-def store_interaction(state):
-    memory.add(
-        content=f"User: {state['query']}\nAssistant: {state['response']}",
-        container_tag=state["user_id"],
+except Exception as e:
+    results = client.search.documents(
+    q="frictionless book",
+    container_tags="user-123"
     )
-    return state
+    print(f"Error adding content: {e}")
