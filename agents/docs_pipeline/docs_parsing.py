@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 pdf_path = BASE_DIR.parent.parent / "public" / "ArtikelAries.pdf"
 
-async def main():
+async def parse_pdf(pdf_path: str = str(pdf_path)):
   client = AsyncLlamaCloud(api_key=os.getenv("LLAMA_API_KEY"))
 
   file = await client.files.create(file=pdf_path,purpose="parse")
@@ -22,4 +22,4 @@ async def main():
 
   print(result.markdown.pages[0].markdown)
 
-asyncio.run(main())
+asyncio.run(parse_pdf())
