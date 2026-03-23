@@ -1,25 +1,24 @@
-from llama_cloud import AsyncLlamaCloud
-import asyncio
-import os
-from dotenv import load_dotenv
+from llama_parse import LlamaParse
+from state import CourseState
+from dotenv import load_dotenv,find_dotenv
 from pathlib import Path
-load_dotenv()
+load_dotenv(find_dotenv())
 
-BASE_DIR = Path(__file__).resolve().parent
 
-pdf_path = BASE_DIR.parent.parent / "public" / "ArtikelAries.pdf"
 
-async def parse_pdf(pdf_path: str = str(pdf_path)):
-  client = AsyncLlamaCloud(api_key=os.getenv("LLAMA_API_KEY"))
+async def extract_pdf_text(state:CourseState):
+  print("Extracting PDF")
+  current_dir = Path(__file__).parent
+  resolved_path = current_dir / state["pdf_path"]
 
-  file = await client.files.create(file=pdf_path,purpose="parse")
-  result = await client.parsing.parse(
-    file_id=file.id,
-    tier="agentic",
-    version="latest",
-    expand=["markdown"],
-  )
+  if not resolved_path.is_file():
+    raise FileNotFoundError(f"Could not Found a pdf at :{resolved_path}")
 
-  print(result.markdown.pages[0].markdown)
+  pasrser = LlamaParse(result_type="markdown", verbose=True)
 
-asyncio.run(parse_pdf())
+  docs = await pasrser.aload_data(str(resolved_path))
+  text = "\n\n" .join([doc.text for doc in docs])
+
+  return {"extracted_text": text}
+
+

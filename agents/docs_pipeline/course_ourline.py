@@ -1,10 +1,13 @@
-from typing import TypedDict
+import asyncio
 from langgraph.graph import StateGraph, START, END
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from pathlib import Path
+from state import CourseState
 from dotenv import load_dotenv
+from docs_parsing import extract_pdf_text
+
 
 load_dotenv()
 
@@ -13,21 +16,11 @@ BASE_DIR = Path(__file__).resolve().parent
 
 pdf_path = BASE_DIR.parent.parent / "public" / "ArtikelAries.pdf"
 
-class CourseState(TypedDict):
-    pdf_path: str
-    extracted_text: str
-    course_outline: str
 
-def extract_pdf_text(state: CourseState):
-    print("--- EXTRACTING PDF TEXT ---")
-    loader = PyPDFLoader(state["pdf_path"])
-    docs = loader.load()
 
-    text = "\n".join([doc.page_content for doc in docs])
 
-    return {"extracted_text": text}
 
-def generate_outline(state: CourseState):
+async def generate_outline(state: CourseState):
     print("--- GENERATING OUTLINE ---")
     llm = ChatOllama(model="minimax-m2.5:cloud", temperature=0.2)
 
@@ -37,7 +30,7 @@ def generate_outline(state: CourseState):
     ])
 
     chain = prompt | llm
-    response = chain.invoke({"text": state["extracted_text"]})
+    response = await chain.ainvoke({"text": state["extracted_text"]})
     return {"course_outline": response.content}
 
 workflow = StateGraph(CourseState)
@@ -51,9 +44,13 @@ workflow.add_edge("generate_outline", END)
 
 app = workflow.compile()
 
-if __name__ == "__main__":
-
-    inputs = {"pdf_path": str(pdf_path)}
-    result = app.invoke(inputs)
+async def main():
+    BASE_DIR = Path(__file__).resolve().parent
+    target_pdf = BASE_DIR.parent.parent / "public" / "ArtikelAries.pdf"
+    inputs = {"pdf_path": str(target_pdf)}
+    result = await app.ainvoke(inputs)
     print("\n\n=== FINAL COURSE OUTLINE ===")
     print(result["course_outline"])
+
+if __name__ == "__main__":
+    asyncio.run(main())
