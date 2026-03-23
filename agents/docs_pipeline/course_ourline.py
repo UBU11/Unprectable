@@ -4,6 +4,9 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 BASE_DIR = Path(__file__).resolve().parent
