@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { 
-  Brain, 
-  FileText, 
-  Upload, 
-  Sparkles, 
-  ArrowRight, 
-  Zap, 
+import {
+  Brain,
+  FileText,
+  Upload,
+  Sparkles,
+  ArrowRight,
+  Zap,
   Eye,
   FileJson,
   ChevronRight
@@ -24,7 +24,7 @@ const features = [
   {
     icon: Sparkles,
     title: 'AI-Powered Analysis',
-    description: 'Mistral AI analyzes your content and extracts key concepts automatically.'
+    description: 'AI analyzes your content and extracts key concepts automatically.'
   },
   {
     icon: Brain,
@@ -79,7 +79,7 @@ export default function HomePage() {
               <span className="text-primary"> Visual Mind Maps</span>
             </h1>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Paste documentation, upload files, or enter any technical text. 
+              Paste documentation, upload files, or enter any technical text.
               Our AI instantly creates interactive mind maps to help you understand and navigate complex concepts.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -151,7 +151,7 @@ export default function HomePage() {
                 <div className="text-center space-y-4">
                   <div className="flex justify-center gap-8">
                     {[1, 2, 3].map((i) => (
-                      <div 
+                      <div
                         key={i}
                         className="px-4 py-3 rounded-xl border-2 border-purple-400/50 bg-purple-950/80 backdrop-blur-sm"
                       >
@@ -168,7 +168,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex justify-center gap-8 pt-4">
                     {[4, 5, 6].map((i) => (
-                      <div 
+                      <div
                         key={i}
                         className="px-4 py-3 rounded-xl border-2 border-purple-400/50 bg-purple-950/80 backdrop-blur-sm"
                       >
@@ -184,7 +184,7 @@ export default function HomePage() {
               <div className="p-6 border-t border-border">
                 <h3 className="text-lg font-semibold mb-2">Interactive Mind Maps</h3>
                 <p className="text-muted-foreground">
-                  Pan, zoom, and explore your documentation visually. Click nodes to expand connections 
+                  Pan, zoom, and explore your documentation visually. Click nodes to expand connections
                   and drill down into specific concepts.
                 </p>
               </div>
@@ -219,7 +219,7 @@ export default function HomePage() {
               <span>DocToMap - Visual Learning Platform</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              Powered by Mistral AI
+              Powered by UBU
             </p>
           </div>
         </div>

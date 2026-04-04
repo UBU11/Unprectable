@@ -21,3 +21,11 @@ export const generateMapInputSchema = z.object({
 });
 
 export type GenerateMapInput = z.infer<typeof generateMapInputSchema>;
+
+export const derivativeNodeSchema = z.object({
+  label: z.string().describe('1-3 word title for the combined concept'),
+  summary: z.string().describe('1-sentence explanation of how they intersect'),
+  details: z.string().describe('3-5 sentences detailing the relationship, intersection, and practical application of both concepts combined'),
+});
+
+export type DerivativeNodeData = z.infer<typeof derivativeNodeSchema>;
