@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DocToMap - Visual Learning Platform",
+  title: "Unprectable - Visual Learning Platform",
   description: "Transform dense documentation into interactive mind maps using AI",
 };
 

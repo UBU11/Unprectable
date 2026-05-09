@@ -1,8 +1,8 @@
-# Unpreactable: AI-Powered Visual Learning Platform
+# Unprectable: AI-Powered Visual Learning Platform
 
 ## Overview
 
-Unpreactable is an AI-powered visual learning platform that transforms dense, text-heavy documentation into interactive, easily digestible mind maps. By leveraging Large Language Models (LLMs) to parse and structure content, the platform automatically generates hierarchical nodes and edges, allowing users to visually navigate complex technical concepts.
+Unprectable is an AI-powered visual learning platform that transforms dense, text-heavy documentation into interactive, easily digestible mind maps. By leveraging Large Language Models (LLMs) to parse and structure content, the platform automatically generates hierarchical nodes and edges, allowing users to visually navigate complex technical concepts.
 
 ## Features
 

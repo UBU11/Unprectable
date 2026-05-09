@@ -372,7 +372,7 @@ function MindMapCanvas() {
             <Brain className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <h1 className="text-xl font-bold">Clover</h1>
+            <h1 className="text-xl font-bold">Unprectable</h1>
             <p className="text-xs text-muted-foreground">Transform docs into visual mind maps</p>
           </div>
         </div>
